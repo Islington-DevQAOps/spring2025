@@ -35,3 +35,17 @@ spec:
         imagePullPolicy: Always
       imagePullSecrets:
       - name: dockerhub-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: private-app-service
+spec:
+  type: NodePort
+  selector:
+    app: private-app
+  ports:
+  - protocol: TCP
+    port: 80 # The port your application listens on inside the container
+    targetPort: 80 # The port your application listens on inside the container
+    nodePort: 30001 # Choose a port in the NodePort range (30000-32767)
