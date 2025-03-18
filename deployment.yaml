@@ -15,7 +15,7 @@ spec:
       containers:
       - name: private-app
         image: <your-dockerhub-username>/<your-private-repo>:<tag>
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
 ---
 apiVersion: v1
 kind: Service
