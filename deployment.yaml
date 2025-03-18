@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dockerhub-secret
+type: kubernetes.io/docker-registry
+stringData:
+  .dockerconfigjson: |
+    {
+      "auths": {
+        "docker.io": {
+          "username": "<your-dockerhub-username>",
+          "password": "<your-dockerhub-password>",
+          "email": "<your-dockerhub-email>"
+        }
+      }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: private-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: private-app
+  template:
+    metadata:
+      labels:
+        app: private-app
+    spec:
+      containers:
+      - name: private-app
+        image: <your-dockerhub-username>/<your-private-repo>:<tag>
+        imagePullPolicy: Always
+      imagePullSecrets:
+      - name: dockerhub-secret
